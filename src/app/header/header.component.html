@@ -1,0 +1,71 @@
+<div class="header">
+  <div class="header-container">
+    <a class="logo">
+      <img src="assets/logo.png" alt="Logo" />
+    </a>
+    @if (isSearchActive) {
+    <nav class="nav">
+      @for (link of navLinks; track link.label) {
+      <a [href]="link.path">
+        <img [src]="link.icon" [alt]="link.label" />
+        {{ link.label }}
+      </a>
+      }
+    </nav>
+    }
+
+    <div class="search">
+      @if (isSearchActive) {<button class="search-btn"><img src="assets/svg/search.svg" alt="search"></button>}
+      @else{
+      <form class="header-form">
+        <div class="input-wrapper">
+          <input class="main-header-input" placeholder="Поисковой запрос" [(ngModel)]="searchText"
+            [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+        </div>
+        <div class="expansion-panel">
+          <div class="history">
+            <p class="history-title">История</p>
+            <hr matAutocompleteOrigin #origin="matAutocompleteOrigin" class="line" />
+            <mat-autocomplete #auto="matAutocomplete">
+              @for (elem of historyData; track elem) {
+              <mat-option [value]="elem">{{elem}}</mat-option>
+              }
+            </mat-autocomplete>
+          </div>
+          <div class="extra-form">
+            <mat-form-field class="second-input" appearance="outline">
+              <mat-label>Автор</mat-label>
+              <input matInput placeholder="Имя или должность">
+            </mat-form-field>
+            <div class="first-section-checkbox">
+              <mat-checkbox>Я участник</mat-checkbox>
+              <mat-checkbox>Строгий поиск</mat-checkbox>
+              <mat-checkbox>В заголовках</mat-checkbox>
+            </div>
+            <div class="second-section">
+              <p class="second-section-title">Только</p>
+              <div class="second-section-checkbox">
+                <mat-checkbox>Теги</mat-checkbox>
+                <mat-checkbox>Просьбы</mat-checkbox>
+                <mat-checkbox>Контакты</mat-checkbox>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      }
+    </div>
+
+    <button class="add"><img src="assets/svg/plus.svg" alt="add"></button>
+  </div>
+
+  <div class="actions">
+    <div class="notifications">
+      <span class="icon"><img src="assets/svg/bell.svg" alt="bell"></span>
+    </div>
+
+    <div class="avatar">
+      <img src="assets/AVA.png" alt="User" />
+    </div>
+  </div>
+</div>

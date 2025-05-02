@@ -1,0 +1,41 @@
+@use '@angular/material' as mat;
+
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+*{
+  font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+body{
+  margin: 0 auto;
+  font-size: 11pt;
+  line-height: 1;
+  letter-spacing: 0.25;
+  font-weight: 300;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html {
+  @include mat.theme((
+    typography: (
+      plain-family: Roboto,
+      brand-family: Open Sans,
+      bold-weight: 900,
+      medium-weight: 500,
+      regular-weight: 200,
+    ),
+    density: -2,
+  ));
+  @include mat.form-field-overrides((
+    outlined-label-text-size: 10pt,
+    subscript-text-size: 10pt,
+    container-text-size: 10pt
+  ));
+
+  @include mat.checkbox-overrides((
+    label-text-size: 10pt,
+  ));
+  
+}
