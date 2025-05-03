@@ -1,10 +1,13 @@
 <div class="header">
   <div class="header-container">
+    <button class="burger-item" [ngClass]="{ active: isNavOpen }" (click)="isNavOpen = !isNavOpen">
+      <img src="assets/svg/burger.svg" alt="burger-item" />
+    </button>
     <a class="logo">
       <img src="assets/logo.png" alt="Logo" />
     </a>
-    @if (isSearchActive) {
-    <nav class="nav">
+    @if (!isSearchActive) {
+    <nav class="nav" [ngClass]="{ active: isNavOpen }">
       @for (link of navLinks; track link.label) {
       <a [href]="link.path">
         <img [src]="link.icon" [alt]="link.label" />
@@ -13,41 +16,51 @@
       }
     </nav>
     }
-
-    <div class="search">
-      @if (isSearchActive) {<button class="search-btn"><img src="assets/svg/search.svg" alt="search"></button>}
-      @else{
-      <form class="header-form">
+    <div class="history-wrapper">
+      <a href="#" class="history-btn">
+        <img src="assets/svg/history.svg" alt="link.label" />
+      </a>
+    </div>
+    <div class="search" [ngClass]="{ active: isSearchActive }">
+      @if (!isSearchActive) {<button class="search-btn" (click)="toggleSearch()">
+        <img src="assets/svg/search.svg" alt="search" /></button>} @else{
+      <form #formWrapper class="header-form" [formGroup]="form">
         <div class="input-wrapper">
-          <input class="main-header-input" placeholder="Поисковой запрос" [(ngModel)]="searchText"
-            [matAutocomplete]="auto" [matAutocompleteConnectedTo]="origin">
+          <button class="exit-btn" (click)="toggleSearch()">
+            <img src="assets/svg/arrow.svg" alt="exit" />
+          </button>
+          <input class="main-header-input" placeholder="Поисковой запрос" [matAutocomplete]="auto"
+            [matAutocompleteConnectedTo]="origin" appAutofocus formControlName="search" />
         </div>
         <div class="expansion-panel">
           <div class="history">
             <p class="history-title">История</p>
-            <hr matAutocompleteOrigin #origin="matAutocompleteOrigin" class="line" />
+            <hr class="line" matAutocompleteOrigin #origin="matAutocompleteOrigin" />
             <mat-autocomplete #auto="matAutocomplete">
               @for (elem of historyData; track elem) {
-              <mat-option [value]="elem">{{elem}}</mat-option>
+              <mat-option [value]="elem">{{ elem }}</mat-option>
               }
             </mat-autocomplete>
           </div>
           <div class="extra-form">
             <mat-form-field class="second-input" appearance="outline">
               <mat-label>Автор</mat-label>
-              <input matInput placeholder="Имя или должность">
+              <input matInput placeholder="Имя или должность" formControlName="author" />
+              <mat-icon matSuffix><img src="assets/svg/input_icon.svg" alt="input-icon" matSuffix /></mat-icon>
             </mat-form-field>
             <div class="first-section-checkbox">
-              <mat-checkbox>Я участник</mat-checkbox>
-              <mat-checkbox>Строгий поиск</mat-checkbox>
-              <mat-checkbox>В заголовках</mat-checkbox>
+              @for (item of searchTypeOptions; track item){
+              <mat-checkbox [value]="item" (change)="onCheckboxChange($event, 'searchType')"
+                [checked]="isChecked('searchType', item)">{{ item }}</mat-checkbox>
+              }
             </div>
             <div class="second-section">
               <p class="second-section-title">Только</p>
               <div class="second-section-checkbox">
-                <mat-checkbox>Теги</mat-checkbox>
-                <mat-checkbox>Просьбы</mat-checkbox>
-                <mat-checkbox>Контакты</mat-checkbox>
+                @for (item of searchOnlyOptions; track item){
+                <mat-checkbox [value]="item" (change)="onCheckboxChange($event, 'searchBy')"
+                  [checked]="isChecked('searchBy', item)">{{ item }}</mat-checkbox>
+                }
               </div>
             </div>
           </div>
@@ -55,13 +68,14 @@
       </form>
       }
     </div>
-
-    <button class="add"><img src="assets/svg/plus.svg" alt="add"></button>
+    <button class="add">
+      <img src="assets/svg/plus.svg" alt="add" />
+    </button>
   </div>
 
   <div class="actions">
     <div class="notifications">
-      <span class="icon"><img src="assets/svg/bell.svg" alt="bell"></span>
+      <span class="icon"><img src="assets/svg/bell.svg" alt="bell" /></span>
     </div>
 
     <div class="avatar">

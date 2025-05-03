@@ -1,6 +1,4 @@
 @use '@angular/material' as mat;
-
-/* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 *{
@@ -37,5 +35,17 @@ html {
   @include mat.checkbox-overrides((
     label-text-size: 10pt,
   ));
-  
+  div.mat-mdc-autocomplete-panel {
+    background-color: #fff;
+  }
+  .mat-mdc-option {
+    min-height: 32px;
+  }
+  div.mat-mdc-autocomplete-panel{
+    max-height: 188px;
+  }
+  .cdk-overlay-pane{
+    position: absolute;
+    top: 56px;
+  }
 }
