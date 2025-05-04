@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { IForm } from "./form.service";
 import { FormGroup } from "@angular/forms";
 import { BehaviorSubject } from "rxjs";
+import { Form } from "../models/form.model";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class LocalStorageService {
 
   historyData: string[] = []
 
-  saveToHistory(form: FormGroup<IForm>) {
+  saveToHistory(form: FormGroup<Form>) {
     const searchValue = form.getRawValue().search;
     const currentValue = this.historySubject.getValue()
     const isNotEptyString = !(searchValue.trim() === '')
@@ -26,7 +26,7 @@ export class LocalStorageService {
     }
   }
 
-  saveFormState(form: FormGroup<IForm>) {
+  saveFormState(form: FormGroup<Form>) {
     const formData = form.getRawValue();
     const currentHistory = this.historySubject.getValue();
     localStorage.setItem('formState', JSON.stringify(formData));

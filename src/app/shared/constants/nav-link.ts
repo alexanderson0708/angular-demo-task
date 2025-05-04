@@ -1,11 +1,11 @@
-export interface INavLink {
+export interface NavLink {
   icon: string,
   label: string,
   path: string,
   isActive: boolean
 }
 
-export const NAV_LINK: INavLink[] = [
+export const NAV_LINK: NavLink[] = [
   { icon: 'assets/svg/link.svg', label: 'Ссылки', path: '#', isActive: true },
   {
     icon: 'assets/svg/contacts.svg',

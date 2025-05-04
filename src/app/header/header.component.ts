@@ -19,11 +19,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { AutofocusDirective } from '../shared/directives/autofocus.directive';
 import { NgOptimizedImage } from '@angular/common';
-import { FiltersName, FormService, IForm } from '../shared/services/form.service';
-import { INavLink, NAV_LINK, ONLY_OPTIONS, TYPE_OPTIONS } from '../shared/constants/nav-link';
+import { FormService } from '../shared/services/form.service';
+import { NavLink, NAV_LINK, ONLY_OPTIONS, TYPE_OPTIONS } from '../shared/constants/nav-link';
 import { LocalStorageService } from '../shared/services/local-storage.service';
 import { EnterSubmitDirective } from '../shared/directives/enter-submit.directive';
 import { ClickOutsideFormDirective } from '../shared/directives/clickOutside.directive';
+import { FiltersName, Form } from '../shared/models/form.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -48,12 +50,13 @@ import { ClickOutsideFormDirective } from '../shared/directives/clickOutside.dir
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent implements OnInit {
-  form!: FormGroup<IForm>;
+  form!: FormGroup<Form>;
+  private historySubscription?: Subscription;
   isSearchActive: boolean = false;
   searchText: string = '';
   isNavOpen = false;
   historyData: string[] = [];
-  navLinks: INavLink[] = NAV_LINK;
+  navLinks: NavLink[] = NAV_LINK;
   searchTypeOptions: string[] = TYPE_OPTIONS;
   searchOnlyOptions: string[] = ONLY_OPTIONS;
 
@@ -62,18 +65,12 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formService.createForm()
     this.formService.restoreFormState(this.form);
-
-    this.localStorageService.history$.subscribe(data => {
-      this.historyData = data
-    })
   }
 
   handleOutsideClick() {
     this.isSearchActive = false;
     this.localStorageService.saveToHistory(this.form);
     this.localStorageService.saveFormState(this.form);
-    console.log(this.form);
-
   }
 
   onCheckboxChange(event: MatCheckboxChange, controlName: FiltersName) {
@@ -92,6 +89,13 @@ export class HeaderComponent implements OnInit {
     this.isSearchActive = true;
     this.formService.restoreFormState(this.form);
     this.cdr.markForCheck()
+    if (this.isSearchActive) {
+      this.historySubscription = this.localStorageService.history$.subscribe(data => {
+        this.historyData = data
+      })
+    } else {
+      this.historySubscription?.unsubscribe();
+    }
   }
 
   isChecked(controlName: FiltersName, value: string): boolean {

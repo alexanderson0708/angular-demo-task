@@ -1,13 +1,12 @@
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { IForm } from '../services/form.service';
-import { LocalStorageService } from '../services/local-storage.service';
+import { Form } from '../models/form.model';
 
 @Directive({
   selector: '[appEnterSubmit]'
 })
 export class EnterSubmitDirective {
-  @Input() formGroup!: FormGroup<IForm>;
+  @Input() formGroup!: FormGroup<Form>;
   @Input() isSearchActive!: boolean;
   @Output() enterSumbit = new EventEmitter<void>();
 
