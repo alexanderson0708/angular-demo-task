@@ -1,16 +1,31 @@
 <div class="header">
   <div class="header-container">
-    <button class="burger-item" [ngClass]="{ active: isNavOpen }" (click)="isNavOpen = !isNavOpen">
-      <img src="assets/svg/burger.svg" alt="burger-item" />
+    <button
+      class="burger-item"
+      [class.active]="isNavOpen"
+      (click)="toggleNav()"
+    >
+      <img
+        ngSrc="assets/svg/burger.svg"
+        width="24"
+        height="24"
+        alt="burger-item"
+      />
     </button>
     <a class="logo">
-      <img src="assets/logo.png" alt="Logo" />
+      <img
+        ngSrc="assets/logo.png"
+        width="150"
+        height="56"
+        alt="Logo"
+        priority
+      />
     </a>
     @if (!isSearchActive) {
-    <nav class="nav" [ngClass]="{ active: isNavOpen }">
+    <nav class="nav" [class.active]="isNavOpen">
       @for (link of navLinks; track link.label) {
       <a [href]="link.path">
-        <img [src]="link.icon" [alt]="link.label" />
+        <img [ngSrc]="link.icon" [alt]="link.label" width="24" height="24" />
         {{ link.label }}
       </a>
       }
@@ -18,24 +33,62 @@
     }
     <div class="history-wrapper">
       <a href="#" class="history-btn">
-        <img src="assets/svg/history.svg" alt="link.label" />
+        <img
+          ngSrc="assets/svg/history.svg"
+          alt="link.label"
+          width="24"
+          height="24"
+        />
       </a>
     </div>
-    <div class="search" [ngClass]="{ active: isSearchActive }">
-      @if (!isSearchActive) {<button class="search-btn" (click)="toggleSearch()">
-        <img src="assets/svg/search.svg" alt="search" /></button>} @else{
-      <form #formWrapper class="header-form" [formGroup]="form">
+    <div class="search" [class.active]="isSearchActive">
+      @if (!isSearchActive) {<button
+        class="search-btn"
+        (click)="toggleSearch()"
+      >
+        <img
+          ngSrc="assets/svg/search.svg"
+          alt="search"
+          width="24"
+          height="24"
+        /></button
+      >} @else{
+      <form
+        #formWrapper
+        class="header-form"
+        [formGroup]="form"
+        appEnterSubmit
+        [isSearchActive]="isSearchActive"
+        appClickOutsideForm
+        (clickedOutside)="handleOutsideClick()"
+        (enterSumbit)="onPressEnter()"
+      >
         <div class="input-wrapper">
-          <button class="exit-btn" (click)="toggleSearch()">
-            <img src="assets/svg/arrow.svg" alt="exit" />
+          <button type="button" class="exit-btn" (click)="toggleSearch()">
+            <img
+              ngSrc="assets/svg/arrow.svg"
+              alt="exit"
+              width="24"
+              height="24"
+            />
           </button>
-          <input class="main-header-input" placeholder="Поисковой запрос" [matAutocomplete]="auto"
-            [matAutocompleteConnectedTo]="origin" appAutofocus formControlName="search" />
+          <input
+            class="main-header-input"
+            placeholder="Поисковой запрос"
+            [matAutocomplete]="auto"
+            [matAutocompleteConnectedTo]="origin"
+            appAutofocus
+            formControlName="search"
+          />
         </div>
         <div class="expansion-panel">
           <div class="history">
             <p class="history-title">История</p>
-            <hr class="line" matAutocompleteOrigin #origin="matAutocompleteOrigin" />
+            <hr
+              class="line"
+              matAutocompleteOrigin
+              #origin="matAutocompleteOrigin"
+            />
             <mat-autocomplete #auto="matAutocomplete">
               @for (elem of historyData; track elem) {
               <mat-option [value]="elem">{{ elem }}</mat-option>
@@ -45,21 +98,40 @@
           <div class="extra-form">
             <mat-form-field class="second-input" appearance="outline">
               <mat-label>Автор</mat-label>
-              <input matInput placeholder="Имя или должность" formControlName="author" />
-              <mat-icon matSuffix><img src="assets/svg/input_icon.svg" alt="input-icon" matSuffix /></mat-icon>
+              <input
+                matInput
+                placeholder="Имя или должность"
+                formControlName="author"
+              />
+              <mat-icon matSuffix
+                ><img
+                  ngSrc="assets/svg/input_icon.svg"
+                  alt="input-icon"
+                  matSuffix
+                  width="24"
+                  height="24"
+              /></mat-icon>
             </mat-form-field>
             <div class="first-section-checkbox">
               @for (item of searchTypeOptions; track item){
-              <mat-checkbox [value]="item" (change)="onCheckboxChange($event, 'searchType')"
-                [checked]="isChecked('searchType', item)">{{ item }}</mat-checkbox>
+              <mat-checkbox
+                [value]="item"
+                (change)="onCheckboxChange($event, 'searchType')"
+                [checked]="isChecked('searchType', item)"
+                >{{ item }}</mat-checkbox
+              >
               }
             </div>
             <div class="second-section">
               <p class="second-section-title">Только</p>
               <div class="second-section-checkbox">
                 @for (item of searchOnlyOptions; track item){
-                <mat-checkbox [value]="item" (change)="onCheckboxChange($event, 'searchBy')"
-                  [checked]="isChecked('searchBy', item)">{{ item }}</mat-checkbox>
+                <mat-checkbox
+                  [value]="item"
+                  (change)="onCheckboxChange($event, 'searchBy')"
+                  [checked]="isChecked('searchBy', item)"
+                  >{{ item }}</mat-checkbox
+                >
                 }
               </div>
             </div>
@@ -69,17 +141,19 @@
       }
     </div>
     <button class="add">
-      <img src="assets/svg/plus.svg" alt="add" />
+      <img ngSrc="assets/svg/plus.svg" alt="add" width="24" height="24" />
     </button>
   </div>
 
   <div class="actions">
     <div class="notifications">
-      <span class="icon"><img src="assets/svg/bell.svg" alt="bell" /></span>
+      <span class="icon"
+        ><img ngSrc="assets/svg/bell.svg" alt="bell" width="24" height="24"
+      /></span>
     </div>
 
     <div class="avatar">
-      <img src="assets/AVA.png" alt="User" />
+      <img ngSrc="assets/AVA.png" alt="User" width="32" height="32" />
     </div>
   </div>
 </div>
